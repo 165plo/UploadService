@@ -1,0 +1,6 @@
+﻿POST /api/values HTTP/1.1
+Host: localhost:44355
+Content-Type: application/octet-stream
+Accept: application/json
+Transfer-Encoding: chunked
+Accept-Language: en-us
