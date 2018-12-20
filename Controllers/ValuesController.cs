@@ -13,7 +13,7 @@ namespace UploadService.Controllers
 {
 	[Route("api/[controller]")]
 	[ApiController]
-	public class ValuesController : ControllerBase
+	public class FileController : ControllerBase
 	{
 		// GET api/values
 		[HttpGet]
@@ -29,8 +29,28 @@ namespace UploadService.Controllers
 		{
 			Request.EnableRewind();
 			Stream body = Request.Body;
-			Debug.WriteLine(body.Length);
+			var filename = Path.GetTempFileName();
+			using (FileStream fs = System.IO.File.Open(filename, FileMode.OpenOrCreate) )
+			{
+				Debug.WriteLine(filename);
+				body.CopyTo(fs);
+			}
 		}
 
+		[HttpPost]
+		[Route("{filetype}/{filename}")]
+		[RequestSizeLimit(2147483648)] // https://stackoverflow.com/questions/43305220/form-key-or-value-length-limit-2048-exceeded
+		[DisableFormValueModelBinding] // https://dotnetcoretutorials.com/2017/03/12/uploading-files-asp-net-core/
+		public void DxsUpload()
+		{
+			//Request.EnableRewind();
+			Stream body = Request.Body;
+			var filename = Path.GetTempFileName();
+			using (FileStream fs = System.IO.File.Open(filename, FileMode.OpenOrCreate))
+			{
+				Debug.WriteLine(filename);
+				body.CopyTo(fs);
+			}
+		}
 	}
 }
